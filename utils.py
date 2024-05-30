@@ -202,7 +202,7 @@ def contrastive_loss(feature_norm,closest_mode_indices,sub_closest_mode_indices,
     return loss #loss
 
 
-def sub_contrastive_loss(feature_norm,closest_mode_indices,sub_closest_mode_indices, temp=0.07, temp1=0.12):
+def sub_contrastive_loss(feature_norm,closest_mode_indices,sub_closest_mode_indices, temp=0.12, temp1=0.07):
     device = (torch.device('cuda') if feature_norm.is_cuda
               else torch.device('cpu'))
 
@@ -214,7 +214,7 @@ def sub_contrastive_loss(feature_norm,closest_mode_indices,sub_closest_mode_indi
     feature_norm1 = F.normalize(feature_norm1, dim=1)
 
     # sub_similarity = torch.matmul(feature_norm1, feature_norm1.T)
-    # tau1 = 0.03 + 0.5 * (0.03- 0.02) * (1 + torch.cos(math.pi * (1 + sub_similarity)))
+    # tau1 = 0.15 + 0.5 * (0.15- 0.12) * (1 + torch.cos(math.pi * (1 + sub_similarity)))
     # sub_anchor_dot_contrast = torch.div(sub_similarity, tau1)
 
     sub_anchor_dot_contrast = torch.div(torch.matmul(feature_norm1, feature_norm1.T), temp1)
@@ -243,7 +243,7 @@ def sub_contrastive_loss(feature_norm,closest_mode_indices,sub_closest_mode_indi
     # another_positive_mask = same_closest_mode_mask
 
     # similarity = torch.matmul(feature_norm1, feature_norm1.T)
-    # tau = 0.05 + 0.5 * (0.05 - 0.04) * (1 + torch.cos(math.pi * (1 + similarity)))
+    # tau = 0.15 + 0.5 * (0.15 - 0.12) * (1 + torch.cos(math.pi * (1 + similarity)))
     # anchor_dot_contrast = torch.div(similarity, tau)
 
     anchor_dot_contrast = torch.div(torch.matmul(feature_norm1, feature_norm1.T), temp)
